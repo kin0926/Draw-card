@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>芽衣的奖励时间</title>
+		<style>
+			body {
+				text-align: center;
+				margin: 0;
+				padding: 0;
+				font-size: 2rem;
+				font-weight: 550;
+				background-image: url(./img/f055e6355b327081329ee49eac6389cd.png);
+				background-repeat: repeat;
+			}
+
+			h1 {
+				color: #c82c2c;
+				font-size: 6rem;
+				border: #000 5px solid;
+				background-color: rgba(205, 75, 255, 0.2);
+			}
+
+			.container {
+				margin: auto 50px;
+				/* max-width: 500px; */
+				padding: 76px;
+				background-color: rgba(255, 255, 255, 0.1);
+				border-radius: 10px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				height: 2518px;
+			}
+
+			.form-group {
+				margin-bottom: 15px;
+			}
+
+			.form-group label {
+				display: block;
+				font-size: 4rem;
+				margin-bottom: 5px;
+				color: #e55f2a;
+			}
+
+			.form-group input {
+				width: 100%;
+				padding: 8px;
+				border: 1px solid #cccccc;
+				border-radius: 4px;
+				font-size: 3rem;
+			}
+
+			input{
+				background-color: rgba(245, 245, 245, 0.5);
+			}
+
+			.result {
+				margin: 20px auto;
+			}
+
+			.card {
+				width: 720px;
+				height: 1130px;
+				border: 1px solid #000;
+				border-radius: 8px;
+				background-color: rgba(245, 245, 245, 0.4);
+				padding: 10px;
+				margin-bottom: 10px;
+				display: none;
+				/* position: relative; */
+				overflow: hidden;
+				margin: auto;
+			}
+
+			.card::before {
+				content: "";
+				/* position: absolute; */
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #f5f5f5;
+				opacity: 0.5;
+				pointer-events: none;
+			}
+
+			.card img {
+				max-width: 100%;
+				max-height: 100%;
+				display: block;
+				margin: 0 auto;
+			}
+
+			#cardProbability1,
+			#cardProbability2,
+			#cardProbability3 {
+				color: #ececec;
+			}
+
+			@keyframes fadeIn {
+				0% {
+					opacity: 0;
+					transform: scale(0.8);
+				}
+
+				100% {
+					opacity: 1;
+					transform: scale(1);
+				}
+			}
+
+			/* 响应式布局 */
+			@media (max-width: 600px) {
+				.container {
+					max-width: 100%;
+					padding: 10px;
+					border-radius: 0;
+				}
+
+				.form-group label,
+				.form-group input {
+					font-size: 14px;
+				}
+
+				.card {
+					width: 150px;
+					height: 225px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>芽衣的奖励时间</h1>
+
+			<div class="form-group">
+				<label for="cardName1">卡牌1名称:</label>
+				<input type="text" id="cardName1" value="1:奖励5元" />
+				<label for="cardProbability1">概率:</label>
+				<input type="number" id="cardProbability1" min="0" max="100" step="0.01" value='87' />
+				<span>%</span>
+			</div>
+			<div class="form-group">
+				<label for="cardName2">卡牌2名称:</label>
+				<input type="text" id="cardName2" value="2:奖励30元" />
+				<label for="cardProbability2">概率:</label>
+				<input type="number" id="cardProbability2" min="0" max="100" step="0.01" value='10' />
+				<span>%</span>
+			</div>
+
+			<div class="form-group">
+				<label for="cardName3">卡牌3名称:</label>
+				<input type="text" id="cardName3" value="3:奖励100元,花吧~" />
+				<label for="cardProbability3">概率:</label>
+				<input type="number" id="cardProbability3" min="0" max="100" step="0.01" value='3' />
+				<span>%</span>
+			</div>
+
+			<button onclick="drawCard()" style="float:right; text-align: right; font-size: 3rem; color: skyblue;">抽卡</button>
+			<!-- 这个是用来清除上面这个的浮动的 -->
+			<div style=" clear: both;"></div>
+			
+			<div class="result" id="result"></div>
+			<div>...</div>
+		</div>
+		<script>
+			function drawCard() {
+				var card1Name = document.getElementById("cardName1").value;
+				var card1Probability = parseFloat(document.getElementById("cardProbability1").value);
+				var card2Name = document.getElementById("cardName2").value;
+				var card2Probability = parseFloat(document.getElementById("cardProbability2").value);
+				var card3Name = document.getElementById("cardName3").value;
+				var card3Probability = parseFloat(document.getElementById("cardProbability3").value);
+
+				var random = Math.random() * 100; // 生成一个0到100之间的随机数
+				var resultDiv = document.getElementById("result");
+				resultDiv.innerHTML = ''; // 清空之前的抽卡结果
+
+				if (random <= card1Probability) {
+					displayCard(card1Name);
+				} else if (random <= card1Probability + card2Probability) {
+					displayCard(card2Name);
+				} else if (random <= card1Probability + card2Probability + card3Probability) {
+					displayCard(card3Name);
+				}
+				//  else {
+				// 	displayResult("很遗憾，你没有获得任何卡牌");
+				// }
+			}
+
+			function displayCard(cardName) {
+				var resultDiv = document.getElementById("result");
+				var cardDiv = document.createElement('div');
+				cardDiv.className = "card";
+				cardDiv.innerHTML = `<h2 style='color:#FF8300'>${cardName}</h2>` + '<img src="./img/' + cardName.split(':')[0] + '.png">';
+				resultDiv.appendChild(cardDiv);
+
+				// 添加动画效果
+				cardDiv.style.display = 'block';
+				cardDiv.style.animation = 'fadeIn 0.5s';
+
+				// 0.5秒后移除动画类名
+				setTimeout(function() {
+					cardDiv.style.animation = '';
+				}, 500);
+			}
+		</script>
+	</body>
+</html>
